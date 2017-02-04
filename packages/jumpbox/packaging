@@ -1,0 +1,162 @@
+#!/bin/bash
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Detect # of CPUs so make jobs can be parallelized
+CPUS=$(grep -c ^processor /proc/cpuinfo)
+ # Available variables
+# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+export HOME=/var/vcap
+n=0 # how many jobs have we spun in parallel?
+
+cp -a jumpbox/setup ${BOSH_INSTALL_TARGET}/setup
+chmod 0755 ${BOSH_INSTALL_TARGET}/setup
+
+mkdir ${BOSH_INSTALL_TARGET}/bin
+cp -a jumpbox/bins/* ${BOSH_INSTALL_TARGET}/bin
+cp -a jumpbox/cloudfoundry-utils/* ${BOSH_INSTALL_TARGET}/bin
+chmod 0755 ${BOSH_INSTALL_TARGET}/bin/*
+
+# CURL
+# https://curl.haxx.se/download.html
+# https://curl.haxx.se/download/curl-7.50.3.tar.gz
+(tar -xzvf jumpbox/curl-7.50.3.tar.gz
+ cd curl-7.50.3
+ ./configure --prefix=${BOSH_INSTALL_TARGET}
+ make -j${CPUS}
+ make install) &
+n=$((n + 1))
+
+# GIT
+# https://www.kernel.org/pub/software/scm/git
+# https://www.kernel.org/pub/software/scm/git/git-2.10.0.tar.gz
+(tar -xzvf jumpbox/git-2.10.0.tar.gz
+ cd git-2.10.0
+ ./configure --prefix=${BOSH_INSTALL_TARGET}
+ make -j${CPUS} all
+ make install) &
+n=$((n + 1))
+
+# JQ
+# https://github.com/stedolan/jq/releases
+# https://github.com/stedolan/jq/releases/download/jq-1.5/jq-1.5.tar.gz
+(tar -xzvf jumpbox/jq-1.5.tar.gz
+ cd jq-1.5
+ ./configure --prefix=${BOSH_INSTALL_TARGET}
+ make -j${CPUS} LDFLAGS=-all-static
+ make install) &
+n=$((n + 1))
+
+# PWGEN
+# https://sourceforge.net/projects/pwgen
+# http://downloads.sourceforge.net/project/pwgen/pwgen/2.07/pwgen-2.07.tar.gz
+(tar -xzvf jumpbox/pwgen-2.07.tar.gz
+ cd pwgen-2.07
+ ./configure --prefix=${BOSH_INSTALL_TARGET}
+ make -j${CPUS}
+ make install) &
+n=$((n + 1))
+
+# TMUX
+# http://libevent.org/
+# https://github.com/libevent/libevent/releases/download/release-2.0.22-stable/libevent-2.0.22-stable.tar.gz
+# https://tmux.github.io/
+# https://github.com/tmux/tmux/releases/download/2.2/tmux-2.2.tar.gz
+(tar -xzvf jumpbox/libevent-2.0.22-stable.tar.gz
+ (cd libevent-2.0.22-stable
+  ./configure --prefix=/usr --disable-shared
+  make -j${CPUS}
+  make install)
+
+ tar -xzvf jumpbox/tmux-2.2.tar.gz
+ cd tmux-2.2
+ ./configure --prefix=${BOSH_INSTALL_TARGET} \
+             --enable-static
+ sed -i 's@#define TMUX_CONF.*@#define TMUX_CONF "'${BOSH_INSTALL_TARGET}'/etc/tmux.conf"@' tmux.h
+ make -j${CPUS}
+ make install) &
+n=$((n + 1))
+
+# TREE
+# http://mama.indstate.edu/users/ice/tree/
+# ftp://mama.indstate.edu/linux/tree/tree-1.7.0.tgz
+(tar -xzvf jumpbox/tree-1.7.0.tar.gz
+ cd tree-1.7.0
+ sed -i "s|prefix = /usr|prefix = ${BOSH_INSTALL_TARGET}|" Makefile
+ make -j${CPUS}
+ make install) &
+n=$((n + 1))
+
+# VIM
+# http://www.vim.org/sources.php
+# ftp://ftp.vim.org/pub/vim/unix/vim-7.4.tar.bz2
+(tar -xjvf jumpbox/vim-7.4.tar.bz2
+ cd vim74
+ ./configure --prefix=${BOSH_INSTALL_TARGET}
+ make -j${CPUS}
+ make install) &
+n=$((n + 1))
+
+# WGET
+# http://ftp.gnu.org/gnu/wget/
+# http://ftp.gnu.org/gnu/wget/wget-1.18.tar.gz
+(tar -xzvf jumpbox/wget-1.18.tar.gz
+ cd wget-1.18
+ ./configure --prefix=${BOSH_INSTALL_TARGET}
+ make -j${CPUS}
+ make install) &
+n=$((n + 1))
+
+# ZIP
+# http://www.linuxfromscratch.org/blfs/view/svn/general/zip.html
+# http://downloads.sourceforge.net/infozip/zip30.tar.gz
+(tar -xzvf jumpbox/zip30.tar.gz
+ cd zip30
+ make prefix=${BOSH_INSTALL_TARGET} \
+      -f unix/Makefile \
+      -j${CPUS} \
+      generic
+ make prefix=${BOSH_INSTALL_TARGET} \
+      -f unix/Makefile \
+      install) &
+n=$((n + 1))
+
+# DOCKER
+# https://github.com/docker/docker/releases
+# https://github.com/docker/docker/archive/v1.12.4-rc1.tar.gz
+#(dpkg -i jumpbox/libltdl7_2.4.2-1.7ubuntu1_amd64.deb 
+# dpkg -i jumpbox/libsystemd-journal0_204-5ubuntu20_amd64.deb 
+# dpkg -i jumpbox/docker-engine_1.13.0-0~ubuntu-trusty_amd64.deb ) &
+#n=$((n + 1))
+
+
+# UNZIP
+# http://www.linuxfromscratch.org/blfs/view/svn/general/unzip.html
+# http://downloads.sourceforge.net/infozip/unzip60.tar.gz
+(tar -xzvf jumpbox/unzip60.tar.gz
+ cd unzip60
+ make prefix=${BOSH_INSTALL_TARGET} \
+      -f unix/Makefile \
+      -j${CPUS} \
+      generic
+ make prefix=${BOSH_INSTALL_TARGET} \
+      -f unix/Makefile \
+      install) &
+n=$((n + 1))
+
+while [[ $n -gt 0 ]]; do
+	wait -n
+	n=$((n - 1))
+done
+
+cp jumpbox/vimrc     ${BOSH_INSTALL_TARGET}/share/vim/vimrc
+cp jumpbox/tmux.conf ${BOSH_INSTALL_TARGET}/etc/tmux.conf
+
+#apt get update
+#apt-get install libltdl7
+#apt-get install libsystemd-journal0
+
+#curl -J -L -O https://apt.dockerproject.org/repo/pool/main/d/docker-engine/docker-engine_1.13.0-0~ubuntu-trusty_amd64.deb
+#dpkg -i docker-engine_1.13.0-0~ubuntu-trusty_amd64.deb
+

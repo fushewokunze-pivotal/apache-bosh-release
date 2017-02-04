@@ -1,7 +1,5 @@
 ---
 name: httpd
-packages: 
-  - apache2
 
 templates:
   bin/httpd_ctl: bin/httpd_ctl
@@ -9,3 +7,14 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+packages: 
+  - apache2
+  - maven
+  - golang
+  - java
+  - docker
+  - node
+  - concourse
+  - ruby
+  - git

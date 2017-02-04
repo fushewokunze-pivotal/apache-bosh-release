@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Setup env vars and folders for the ctl script
+# This helps keep the ctl script as readable as possible
+
+
+export PATH=$PATH:/var/vcap/packages/concourse/bin
+export PATH=$PATH:/var/vcap/packages/docker/bin
+export PATH=$PATH:/var/vcap/packages/golang/bin
+export PATH=$PATH:/var/vcap/packages/java/jdk/bin
+export PATH=$PATH:/var/vcap/packages/maven/bin
+export PATH=$PATH:/var/vcap/packages/node/bin
+export PATH=$PATH:/var/vcap/packages/ruby/bin
+export JAVA_HOME="/var/vcap/packages/java/jdk"
+export MAVEN_HOME=/var/vcap/packages/maven
+export M2_HOME=/var/vcap/packages/maven
+
+
+export CLASSPATH=${CLASSPATH:-''}
+for package_jar_dir in $(ls -d /var/vcap/packages/java/jdk/lib/*.jar)
+do
+  export CLASSPATH=${package_jar_dir}:$CLASSPATH
+done
+

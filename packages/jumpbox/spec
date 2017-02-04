@@ -1,0 +1,52 @@
+---
+name: jumpbox
+dependencies: []
+files:
+  - jumpbox/setup
+
+    # pre-compiled binaries / scripts
+  - jumpbox/bins/bosh-init
+  - jumpbox/bins/cf
+  - jumpbox/bins/genesis
+  - jumpbox/bins/safe
+  - jumpbox/bins/shield
+  - jumpbox/bins/spiff
+  - jumpbox/bins/spruce
+  - jumpbox/bins/vault
+  - jumpbox/cloudfoundry-utils/*
+
+    # curl
+  - jumpbox/curl-7.50.3.tar.gz
+
+    # git
+  - jumpbox/git-2.10.0.tar.gz
+
+    # jq
+  - jumpbox/jq-1.5.tar.gz
+
+    # pwgen
+  - jumpbox/pwgen-2.07.tar.gz
+
+    # tmux
+  - jumpbox/libevent-2.0.22-stable.tar.gz
+  - jumpbox/tmux-2.2.tar.gz
+  - jumpbox/tmux.conf
+
+    # tree
+  - jumpbox/tree-1.7.0.tar.gz
+
+    # vim
+  - jumpbox/vim-7.4.tar.bz2
+  - jumpbox/vimrc
+
+    # wget
+  - jumpbox/wget-1.18.tar.gz
+
+    # zip
+  - jumpbox/zip30.tar.gz
+  - jumpbox/unzip60.tar.gz
+
+   # docker
+  #- jumpbox/docker-engine_1.13.0-0~ubuntu-trusty_amd64.deb
+  #- jumpbox/libltdl7_2.4.2-1.7ubuntu1_amd64.deb
+  #- jumpbox/libsystemd-journal0_204-5ubuntu20_amd64.deb

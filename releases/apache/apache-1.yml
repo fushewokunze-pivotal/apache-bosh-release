@@ -1,0 +1,65 @@
+---
+packages:
+- name: concourse
+  version: 46999443a2ecbc86e090f53adfedbf603f5125b0
+  fingerprint: 46999443a2ecbc86e090f53adfedbf603f5125b0
+  sha1: 564a0a39142f90186773dc07b771134dfec76bf2
+  dependencies: []
+- name: node
+  version: a763d1461eec1e18719969d07ce2aae9b58c7f19
+  fingerprint: a763d1461eec1e18719969d07ce2aae9b58c7f19
+  sha1: 966dfd8f57657b8d425455a5ee0a108563a2f744
+  dependencies: []
+- name: java
+  version: 79625666be07f903ad3627d29c89bd69584b775a
+  fingerprint: 79625666be07f903ad3627d29c89bd69584b775a
+  sha1: b2048821d1ac365ac31b96ba80d338faa820d110
+  dependencies: []
+- name: docker
+  version: d338074fe00f12d092af91e13ba3f4db14eb687c
+  fingerprint: d338074fe00f12d092af91e13ba3f4db14eb687c
+  sha1: 7ef8d185a8bc37a51c0988d3b32dbf5cd15a8c74
+  dependencies: []
+- name: jumpbox
+  version: 828da4e8f296829fbd20fde2ffa2c5817b5e548a
+  fingerprint: 828da4e8f296829fbd20fde2ffa2c5817b5e548a
+  sha1: 607a7f5f94e4a78fee4a192a20f852bd4981c7c2
+  dependencies: []
+- name: bosh-helpers
+  version: 2e315fb7cbca15e9be6f8f176cc5d3268b89d4ef
+  fingerprint: 2e315fb7cbca15e9be6f8f176cc5d3268b89d4ef
+  sha1: 7ec9a19c64536654a29db29810861d3d4ea18f87
+  dependencies: []
+- name: maven
+  version: 7d81a28d0afbf033fbc64574c1d05cb40be60b8b
+  fingerprint: 7d81a28d0afbf033fbc64574c1d05cb40be60b8b
+  sha1: ace0084f6165ffc6ac880e5bf4e58601218d7608
+  dependencies: []
+- name: golang
+  version: 7bddc02ea4a7cc8f325253cea9dbe01ab6ea8129
+  fingerprint: 7bddc02ea4a7cc8f325253cea9dbe01ab6ea8129
+  sha1: eb6b1b6b3eeea5ff77d333a3b438a2518f2bcb3e
+  dependencies: []
+- name: apache2
+  version: 76c60fa26f68d7d478c0242a52481a5666a27348
+  fingerprint: 76c60fa26f68d7d478c0242a52481a5666a27348
+  sha1: d62e413f9c868fcf455954d59c80e1cc91e4a5f6
+  dependencies: []
+- name: ruby
+  version: 42f95d5d90dee86f2a3ad17c4133cb1f817a121f
+  fingerprint: 42f95d5d90dee86f2a3ad17c4133cb1f817a121f
+  sha1: 328bcf16d4526e24c595b8a968e554a4c7f93228
+  dependencies: []
+jobs:
+- name: docker
+  version: 30f6a2f83da1a34d5765085078e018324d133f3e
+  fingerprint: 30f6a2f83da1a34d5765085078e018324d133f3e
+  sha1: 48b7c91b43eaf2ee241b2a5742725febfcb916bc
+- name: httpd
+  version: bf45321a2b5060a7962fe9fc75f43efebbc14708
+  fingerprint: bf45321a2b5060a7962fe9fc75f43efebbc14708
+  sha1: 2bccaff413ee519d53b5866befd87422c6caa89a
+commit_hash: cb3b5da9
+uncommitted_changes: true
+name: apache
+version: '1'
