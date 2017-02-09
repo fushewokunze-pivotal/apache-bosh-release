@@ -1,0 +1,17 @@
+set -ex
+# We grab the latest versions that are in the directory
+CF_CLI_VERSION=`ls -r cf-cli/cf-cli-*.tgz | sed 's/cf-cli\/cf-cli-\(.*\)\.tgz/\1/' | head -1`
+
+# Extract cf cli package
+echo "Extracting cf cli ${CF_CLI_VERSION}..."
+tar xzvf ${BOSH_COMPILE_TARGET}/cf-cli/cf-cli-${CF_CLI_VERSION}.tgz
+if [[ $? != 0 ]] ; then
+  echo "Failed extracting cf cli ${CF_CLI_VERSION}"
+  exit 1
+fi
+
+# Copy cf cli package
+echo "Copying cf cli ${CF_CLI_VERSION}..."
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+cp -a ${BOSH_COMPILE_TARGET}/cf ${BOSH_INSTALL_TARGET}/bin
+

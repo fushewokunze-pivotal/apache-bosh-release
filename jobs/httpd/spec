@@ -18,3 +18,5 @@ packages:
   - concourse
   - ruby
   - git
+  - bosh
+  - cf-cli
